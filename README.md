@@ -40,6 +40,8 @@ yarn
 
 expo start
 
+run on ios or android simulator
+
 
 ## Screenshots: 
 
