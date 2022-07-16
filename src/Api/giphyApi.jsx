@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,36 +7,35 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-} from "react-native";
+} from 'react-native';
 
-import styles from "./styles";
+import styles from './styles';
 
-import axios from "axios";
-import Spinner from "../components/Spinner";
-import { Feather } from "@expo/vector-icons";
-import { Foundation } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
+import axios from 'axios';
+import Spinner from '../components/Spinner';
+import { Feather } from '@expo/vector-icons';
+import { Foundation } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { API_KEY } from '@env';
 
-const baseUrl = "http://api.giphy.com/v1/gifs";
+const baseUrl = 'http://api.giphy.com/v1/gifs';
 
 const GiphyApi = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("useeffect");
-      console.log("useEffect currentPage:", currentPage);
       setIsError(false);
       setIsLoading(true);
 
       try {
         const configurationObject = await axios(`${baseUrl}/trending`, {
           params: {
-            api_key: "ua5KsDBAH5LNnQyvQWJrGNB0dK44mJf7",
+            api_key: API_KEY,
           },
         });
 
@@ -44,7 +43,6 @@ const GiphyApi = () => {
         //setData([...data, ...configurationObject.data.data]);
       } catch (error) {
         setIsError(true);
-        console.log(error);
         setTimeout(() => setIsError(false), 5000);
       }
       setIsLoading(false);
@@ -53,7 +51,6 @@ const GiphyApi = () => {
   }, [currentPage]);
 
   const loadMoreGifs = () => {
-    console.log("load more gifs");
     setCurrentPage(currentPage + 1);
     setIsLoading(true);
   };
@@ -88,9 +85,9 @@ const GiphyApi = () => {
   const renderError = () => {
     if (isError) {
       return (
-        <View style={{ alignItems: "center" }}>
+        <View style={{ alignItems: 'center' }}>
           <Feather name="alert-triangle" size={60} color="red" />
-          <Text style={{ color: "white", fontWeight: "300" }}>
+          <Text style={{ color: 'white', fontWeight: '300' }}>
             Unable to retrieve Gifs at this moment. Please try again later.
           </Text>
         </View>
@@ -110,7 +107,7 @@ const GiphyApi = () => {
     try {
       const configurationObject = await axios(`${baseUrl}/search`, {
         params: {
-          api_key: "ua5KsDBAH5LNnQyvQWJrGNB0dK44mJf7",
+          api_key: API_KEY,
           q: search,
         },
       });
@@ -118,7 +115,6 @@ const GiphyApi = () => {
       setData(configurationObject.data.data);
     } catch (error) {
       setIsError(true);
-      console.log(error);
       setTimeout(() => setIsError(false), 10000);
     }
 
@@ -132,8 +128,7 @@ const GiphyApi = () => {
   const previousPage = () => {
     if (currentPage <= 1) {
       setCurrentPage(currentPage);
-      Alert.alert("First Page", "Try going to the Next Page");
-      console.log("first page");
+      Alert.alert('First Page', 'Try going to the Next Page');
     } else {
       setCurrentPage(currentPage - 1);
     }
@@ -142,28 +137,10 @@ const GiphyApi = () => {
     setCurrentPage(currentPage + 1);
   };
 
-  // const renderRandomGif = async (event) => {
-  //   setIsError(false);
-  //   setIsLoading(true);
-  //   try {
-  //     const configurationObject = await axios(`${baseUrl}/random`, {
-  //       params: {
-  //         api_key: "",
-  //         tag: "",
-  //       },
-  //     });
-  //     setData(configurationObject.data.data);
-  //   } catch (error) {
-  //     setIsError(true);
-  //     setTimeout(() => setIsError(false), 5000);
-  //   }
-  //   setIsLoading(false);
-  // };
-
   return (
     <View style={styles.container}>
       {renderError()}
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: 'row' }}>
         <TextInput
           style={styles.searchbox}
           value={search}
